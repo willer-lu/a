@@ -5,9 +5,16 @@ jobs:
   check-bats-version:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '14'
-      - run: npm install -g bats
-      - run: bats -v
+  - uses: actions/checkout@v3
+
+  - name: Install Dependencies
+    run: /install.sh
+
+  - name: Build artifacts
+    run: /build.sh
+
+  - uses: actions/cache/save@v3
+    id: cache
+    with:
+      path: path/to/dependencies
+      key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
